@@ -8,7 +8,7 @@ This challenge proposed by GO Expert course
 
     make install
 
-## Run the server with sqlite3 db (needs docker)
+## Run the server with sqlite3 db (needs docker client installed)
 
     make run-server-with-sqlite
 
