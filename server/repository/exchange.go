@@ -33,7 +33,7 @@ func (r *exchangeRepository) CreateOne(ctx context.Context, exchange *models.Exc
 }
 
 func (r *exchangeRepository) GetAll(ctx context.Context) ([]models.Exchange, error) {
-	ctxWithTimeout, cancel := context.WithTimeout(ctx, 10*time.Millisecond)
+	ctxWithTimeout, cancel := context.WithTimeout(ctx, r.queryTimeout)
 	defer cancel()
 
 	tx := r.db.WithContext(ctxWithTimeout)

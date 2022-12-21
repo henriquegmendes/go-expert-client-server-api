@@ -25,7 +25,7 @@ This challenge proposed by GO Expert course
 - If you want to check the exchanges saved in database, you make the following request:
 `
   curl --request GET \
-  --url http://localhost:8000/exchange/usd-brl
+  --url http://localhost:8000/cotacao
 `
 
 # Server Available endpoints
@@ -34,9 +34,9 @@ This challenge proposed by GO Expert course
 
 ### Request
 
-`POST /exchange/usd-brl`
+`POST /cotacao`
 
-    curl --request POST \ --url http://localhost:8000/exchange/usd-brl
+    curl --request POST \ --url http://localhost:8080/cotacao
 
 ### Response
 
@@ -48,9 +48,9 @@ This challenge proposed by GO Expert course
 
 ### Request
 
-`GET /exchange/usd-brl`
+`GET /cotacao`
 
-    curl --request GET \ --url http://localhost:8000/exchange/usd-brl
+    curl --request GET \ --url http://localhost:8080/cotacao
 
 ### Response
 

@@ -16,8 +16,8 @@ func LoadExchangeRoutes(router *gin.Engine, exchangeService service.ExchangeServ
 		service: exchangeService,
 	}
 
-	router.POST("/exchange/usd-brl", handler.GetAndSaveBid)
-	router.GET("/exchange/usd-brl", handler.GetAll)
+	router.POST("/cotacao", handler.GetAndSaveBid)
+	router.GET("/cotacao", handler.GetAll)
 }
 
 func (h *exchangeHandler) GetAndSaveBid(ctx *gin.Context) {
