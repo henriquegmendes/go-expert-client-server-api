@@ -27,7 +27,7 @@ func (c *internalClient) GetInternalUSDBRLExchangeQuote(ctx context.Context) (*I
 	ctxWithTimeout, cancel := context.WithTimeout(ctx, c.responseTimeout)
 	defer cancel()
 
-	request, err := http.NewRequestWithContext(ctxWithTimeout, http.MethodPost, fmt.Sprintf("%s%s", c.baseURL, "/exchange/usd-brl"), nil)
+	request, err := http.NewRequestWithContext(ctxWithTimeout, http.MethodPost, fmt.Sprintf("%s%s", c.baseURL, "/cotacao"), nil)
 	if err != nil {
 		return nil, err
 	}
