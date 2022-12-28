@@ -6,6 +6,7 @@ import (
 	"github.com/henriquegmendes/go-expert-client-server-api/server/client"
 	"github.com/henriquegmendes/go-expert-client-server-api/server/models"
 	"github.com/henriquegmendes/go-expert-client-server-api/server/repository"
+	"log"
 	"strconv"
 	"time"
 )
@@ -23,6 +24,7 @@ type exchangeService struct {
 func (s *exchangeService) GetAndSaveBid(ctx context.Context) (*models.Exchange, error) {
 	exchangeResult, err := s.exchangeClient.GetUSDBRLExchangeQuote(ctx)
 	if err != nil {
+		log.Printf("error getting usd-brl quote from exchange client: %s", err.Error())
 		return nil, err
 	}
 
@@ -37,6 +39,7 @@ func (s *exchangeService) GetAndSaveBid(ctx context.Context) (*models.Exchange, 
 
 	err = s.exchangeRepository.CreateOne(ctx, newExchangeModel)
 	if err != nil {
+		log.Printf("error saving usd-brl quote in exchange database: %s", err.Error())
 		return nil, err
 	}
 
@@ -44,7 +47,13 @@ func (s *exchangeService) GetAndSaveBid(ctx context.Context) (*models.Exchange, 
 }
 
 func (s *exchangeService) GetAll(ctx *gin.Context) ([]models.Exchange, error) {
-	return s.exchangeRepository.GetAll(ctx)
+	response, err := s.exchangeRepository.GetAll(ctx)
+	if err != nil {
+		log.Printf("error getting usd-brl saved quotes in exchange database: %s", err.Error())
+		return nil, err
+	}
+
+	return response, nil
 }
 
 func NewExchangeService(exchangeClient client.ExchangeClient, exchangeRepository repository.ExchangeRepository) ExchangeService {

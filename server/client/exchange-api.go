@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/henriquegmendes/go-expert-client-server-api/errors"
+	"github.com/henriquegmendes/go-expert-client-server-api/helpers"
 	"io"
 	"net/http"
 	"time"
@@ -47,11 +49,19 @@ func (c *exchangeClient) GetUSDBRLExchangeQuote(ctx context.Context) (*GetUSDBRE
 	}
 	response, err := c.client.Do(request)
 	if err != nil {
+		if helpers.CheckContextTimedOutError(err) {
+			return nil, errors.RequestTimedOutError
+		}
+
 		return nil, err
 	}
 	responseBytes, err := io.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
+	}
+
+	if helpers.CheckClientWithErrorStatusCode(response.StatusCode) {
+		return nil, helpers.ParseClientErrorResponse(response.StatusCode, responseBytes)
 	}
 
 	var result GetUSDBRExchangeQuoteResponse

@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	internalErrors "github.com/henriquegmendes/go-expert-client-server-api/errors"
+	"github.com/henriquegmendes/go-expert-client-server-api/helpers"
 	"io"
 	"net/http"
 	"time"
@@ -33,11 +35,20 @@ func (c *internalClient) GetInternalUSDBRLExchangeQuote(ctx context.Context) (*I
 	}
 	response, err := c.client.Do(request)
 	if err != nil {
+		if helpers.CheckContextTimedOutError(err) {
+			return nil, internalErrors.RequestTimedOutError
+		}
+
 		return nil, err
 	}
+
 	responseBytes, err := io.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
+	}
+
+	if helpers.CheckClientWithErrorStatusCode(response.StatusCode) {
+		return nil, helpers.ParseClientErrorResponse(response.StatusCode, responseBytes)
 	}
 
 	var result InternalExchangeQuoteResponse
